@@ -16,13 +16,6 @@ pipeline {
     }
     // Build stage
     stages {
-        stage('clone'){
-            steps {
-                sh """
-                    git clone "https://github.com/learninguser/catalogue.git"
-                """
-            }
-        }
         stage('Get the version'){
             steps {
                 script {
