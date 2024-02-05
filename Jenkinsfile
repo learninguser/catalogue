@@ -5,6 +5,9 @@ pipeline {
         }
     }
     environment{
+        projectName = "roboshop"
+        component = "catalogue"
+        nexusURL = "172.31.35.84:8081"
         packageVersion = ''
     }
     options {
@@ -35,8 +38,27 @@ pipeline {
         stage('Build'){
             steps {
                 sh """
-                    zip -q -r catalogue.zip ./* -x ".git" -x "*.zip" -x "Jenkinsfile"
+                    zip -q -r ${component}.zip ./* -x ".git" -x "*.zip" -x "Jenkinsfile"
                 """
+            }
+        }
+        stage('Publish artifact to Nexus'){
+            steps {
+                nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: "${nexusURL}",
+                    groupId: "com.${projectName}",
+                    version: "${packageVersion}",
+                    repository: "${component}",
+                    credentialsId: 'nexus-auth',
+                    artifacts: [
+                        [artifactId: "${projectName}",
+                        classifier: '',
+                        file: "${component}.zip",
+                        type: 'zip']
+                    ]
+                )
             }
         }
     }
