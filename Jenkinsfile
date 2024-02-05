@@ -32,9 +32,11 @@ pipeline {
                 """
             }
         }
-        stage('Deploy'){
+        stage('Build'){
             steps {
-                echo "Hello ${params.action}"
+                sh """
+                    zip -r catalogue.zip ./* -x ".git" -x "*.zip" -x "Jenkinsfile"
+                """
             }
         }
     }
