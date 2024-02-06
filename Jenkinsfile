@@ -53,7 +53,7 @@ pipeline {
                     repository: "${component}",
                     credentialsId: 'nexus-auth',
                     artifacts: [
-                        [artifactId: "${projectName}",
+                        [artifactId: "${component}",
                         classifier: '',
                         file: "${component}.zip",
                         type: 'zip']
