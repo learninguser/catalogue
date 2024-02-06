@@ -15,7 +15,7 @@ pipeline {
         ansiColor('xterm')
     }
     parameters {
-        choice(name: 'action', choices: ['apply', 'destroy'], description: 'Pick something')
+        booleanParam(name: 'DEPLOY', defaultValue: false, description: 'Set to true if deployment ready')
     }
     // Build stage
     stages {
@@ -76,6 +76,11 @@ pipeline {
             }
         }
         stage('Trigger Deploy job'){
+            when {
+                expression {
+                    return params.DEPLOY
+                }
+            }
             steps {
                 script {
                     def params = [
