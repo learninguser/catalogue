@@ -78,7 +78,7 @@ pipeline {
         stage('Trigger Deploy job'){
             when {
                 expression {
-                    return params.DEPLOY
+                    params.DEPLOY
                 }
             }
             steps {
